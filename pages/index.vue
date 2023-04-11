@@ -9,7 +9,7 @@
       <h2>LaTeX Output</h2>
       <div class="latex-output">
         <div class="latex-" v-html="latex"></div>
-        <Copy class="copy-icon" />
+        <Copy class="copy-icon" @click="copyToClipboard" />
       </div>
       <h2>Matrix Preview</h2>
       <pre class="matrix-preview">{{ matrix }}</pre>
@@ -46,6 +46,19 @@ export default {
 
       // this.latex.forEach(x => console.log(x))
     },
+
+    copyToClipboard() {
+      const output = document.querySelector('.latex-output');
+      const range = document.createRange();
+      range.selectNode(output);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      // Optional: show a notification that the text was copied
+      alert('LaTeX code copied to clipboard!');
+    }
+    ,
     readFile(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
