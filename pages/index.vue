@@ -17,95 +17,112 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import 'katex/dist/katex.min.css';
 import csvtojson from 'csvtojson';
 import katex from 'katex';
 
-export default {
-  data() {
-    return {
-      latex: null,
-      matrix: null,
-    };
-  },
-  methods: {
-    async handleFileUpload(event) {
-      const csv = await this.readFile(event.target.files[0]);
-      // console.log(csv)
-      const json = await csvtojson().fromString(csv);
-
-      const latex = this.convertToLatex(json);
-      // const matrix = this.getMatrixText(latex);
-      const matrix = this.convertToMatrix(json);
+let latex = ref(null)
+let matrix = ref(null)
 
 
-      this.latex = latex;
-      this.matrix = matrix;
-      // console.log(this.latex)
+async function handleFileUpload(event) {
+  const csv = await readFile(event.target.files[0]);
+  // console.log(csv)
+  const json = await csvtojson().fromString(csv);
 
-      // this.latex.forEach(x => console.log(x))
-    },
+  const latex1 = convertToLatex(json);
+  // const matrix = this.getMatrixText(latex);
+  const matrix1 = convertToMatrix(json);
 
-    copyToClipboard() {
-      const output = document.querySelector('.latex-output');
-      const range = document.createRange();
-      range.selectNode(output);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      document.execCommand('copy');
-      window.getSelection().removeAllRanges();
-      // Optional: show a notification that the text was copied
-      alert('LaTeX code copied to clipboard!');
+  latex.value = latex1;
+  matrix.value = matrix1;
+  // console.log(this.latex)
+
+  // this.latex.forEach(x => console.log(x))
+}
+
+function copyToClipboard() {
+  const output = document.querySelector('.latex-output');
+  const range = document.createRange();
+  range.selectNode(output);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand('copy');
+  window.getSelection().removeAllRanges();
+  // Optional: show a notification that the text was copied
+  alert('LaTeX code copied to clipboard!');
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(file);
+  });
+}
+
+function convertToLatex(json) {
+  let latex = "\\begin{pmatrix}\n";
+  const rows = json.map((item) => Object.values(item));
+  for (const row of rows) {
+    if (Array.isArray(row)) {
+      latex += row.join(" & ") + " \\\\ \n";
     }
-    ,
-    readFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(reader.error);
-        reader.readAsText(file);
-      });
-    },
-    convertToLatex(json) {
-      let latex = "\\begin{pmatrix}\n";
-      const rows = json.map((item) => Object.values(item));
-      for (const row of rows) {
-        if (Array.isArray(row)) {
-          latex += row.join(" & ") + " \\\\ \n";
-        }
-      }
-      latex += "\\end{pmatrix}";
-
-      return latex;
-    },
-
-    convertToMatrix(json) {
-      let latex = "";
-      const rows = json.map((item) => Object.values(item));
-      for (const row of rows) {
-        if (Array.isArray(row)) {
-          latex += row.join(" & ") + " \n";
-        }
-      }
-      return latex;
-    },
-
-    // getMatrixText(latex) {
-    //   const startIndex = latex.indexOf('\n') + 1;
-    //   const endIndex = latex.lastIndexOf('\n');
-    //   const matrix = latex.substring(startIndex, endIndex);
-    //   const matrixText = matrix.replace(/\\+/g, '').replace(/&/g, '').replace(/\s+/g, ' ').trim();
-    //   return matrixText;
-    // }
-
-
   }
-};
+  latex += "\\end{pmatrix}";
+
+  return latex;
+}
+
+function convertToMatrix(json) {
+  let latex = "";
+  const rows = json.map((item) => Object.values(item));
+  for (const row of rows) {
+    if (Array.isArray(row)) {
+      latex += row.join(" & ") + " \n";
+    }
+  }
+  return latex;
+}
+
+useHead(() => {
+  return {
+    title: 'CSV to LaTeX Converter - Convert CSV Data to LaTeX Tables Online',
+    meta: [
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'Convert CSV data to LaTeX tables online with our free CSV to LaTeX converter tool. Simply upload your CSV file and download the resulting LaTeX code.'
+      },
+      {
+        hid: 'keywords',
+        name: 'keywords',
+        content: 'CSV to LaTeX, convert CSV to LaTeX, CSV to LaTeX converter, LaTeX tables, online LaTeX converter'
+      }
+    ],
+    script: [
+      {
+        hid: 'tags',
+        type: 'application/ld+json',
+        json: {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "CSV to LaTeX Converter - Convert CSV Data to LaTeX Tables Online",
+          "description": "Convert CSV data to LaTeX tables online with our free CSV to LaTeX converter tool. Simply upload your CSV file and download the resulting LaTeX code.",
+          "keywords": "CSV to LaTeX, convert CSV to LaTeX, CSV to LaTeX converter, LaTeX tables, online LaTeX converter",
+          "url": "https://example.com/csv-to-latex-converter",
+          "image": "https://example.com/images/csv-to-latex.png"
+        }
+      }
+    ]
+  }
+})
 </script>
 
 
-<style scoped>
+<style >
 .container {
   display: flex;
   flex-direction: column;

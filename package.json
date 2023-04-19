@@ -15,6 +15,7 @@
     "@types/node": "^18.15.11",
     "csvtojson": "^2.0.10",
     "katex": "^0.16.4",
+    "mathml-to-latex": "^1.2.0",
     "nuxt-dropzone": "^1.0.4"
   }
 }
