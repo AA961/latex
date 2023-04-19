@@ -2,7 +2,7 @@
     <nav>
         <ul>
             <li>
-                <NuxtLink to="/" exact-active-class="active">Home</NuxtLink>
+                <NuxtLink to="/" exact-active-class="active">CSV to LaTex</NuxtLink>
             </li>
             <li>
                 <NuxtLink to="/mathml-to-latex" exact-active-class="active">MathML to LaTeX</NuxtLink>
