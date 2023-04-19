@@ -28,12 +28,12 @@ ul {
 a {
     text-decoration: none;
     color: #066666;
+    padding: 1rem;
 }
 
 li {
     margin: 0 1rem;
     font-size: 1rem;
-    padding: 1rem;
 }
 
 .active {
