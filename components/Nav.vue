@@ -22,17 +22,17 @@ ul {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 a {
     text-decoration: none;
     color: #066666;
-    padding: 1rem;
+    padding: 1rem 0.5rem;
 }
 
 li {
-    margin: 0 1rem;
+    /* margin: 0 1rem; */
     font-size: 1rem;
 }
 
