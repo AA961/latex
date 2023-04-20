@@ -1,6 +1,6 @@
 <template>
     <div class="landing-page">
-        <h1 class="title">Welcome to LaTeX Tools!</h1>
+        <h1 class="title">LaTeX Tools!</h1>
         <div class="subtitle">Here you can find various tools to make your LaTeX workflow easier.</div>
         <div class="tool-container">
             <div class="tool">
@@ -67,6 +67,7 @@ useHead(() => {
     border-radius: 10px;
     padding: 30px;
     text-align: center;
+    margin: 1rem auto;
 }
 
 .tool:hover {

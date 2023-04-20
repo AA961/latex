@@ -2,10 +2,16 @@
     <nav>
         <ul>
             <li>
-                <NuxtLink to="/" exact-active-class="active">CSV to LaTex</NuxtLink>
+                <NuxtLink to="/" exact-active-class="active">Home</NuxtLink>
+            </li>
+            <li>
+                <NuxtLink to="/csv-to-latex" exact-active-class="active">CSV to LaTex</NuxtLink>
             </li>
             <li>
                 <NuxtLink to="/mathml-to-latex" exact-active-class="active">MathML to LaTeX</NuxtLink>
+            </li>
+            <li>
+                <NuxtLink to="/latex-eqution-editor" exact-active-class="active">LaTeX Equation Editor</NuxtLink>
             </li>
         </ul>
     </nav>
@@ -13,8 +19,10 @@
   
 <style scoped>
 nav {
-    background-color: #eee;
+    /* background-color: #eee; */
     padding: 1rem;
+    background-color: #066666;
+
 }
 
 ul {
@@ -27,7 +35,7 @@ ul {
 
 a {
     text-decoration: none;
-    color: #066666;
+    color: white;
     padding: 1rem 0.5rem;
 }
 
@@ -37,8 +45,8 @@ li {
 }
 
 .active {
-    background-color: #04476f;
-    color: blanchedalmond;
+    background-color: #eee;
+    color: #066666;
 }
 </style>
   
