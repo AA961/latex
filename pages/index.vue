@@ -1,192 +1,106 @@
 <template>
-  <div class="container">
-    <h1>Convert CSV to LaTeX</h1>
-    <div class="input-container">
-      <label class="dropzone-message">Drop CSV file here or click to upload</label>
-      <input class="dropzone" type="file" @change="handleFileUpload" accept=".csv">
+    <div class="landing-page">
+        <h1 class="title">Welcome to LaTeX Tools!</h1>
+        <div class="subtitle">Here you can find various tools to make your LaTeX workflow easier.</div>
+        <div class="tool-container">
+            <div class="tool">
+                <h2 class="tool-title">CSV to LaTeX Table</h2>
+                <div class="tool-description">Convert CSV files into LaTeX tables</div>
+                <NuxtLink to="/csv-to-latex" class="tool-button">Use this tool</NuxtLink>
+            </div>
+            <div class="tool">
+                <h2 class="tool-title">MathML to LaTeX</h2>
+                <div class="tool-description">Convert MathML equations into LaTeX</div>
+                <NuxtLink to="/mathml-to-latex" class="tool-button">Use this tool</NuxtLink>
+            </div>
+            <div class="tool">
+                <h2 class="tool-title">LaTeX Equation Editor</h2>
+                <div class="tool-description">Create LaTeX equations with a visual editor</div>
+                <NuxtLink to="/latex-editor" class="tool-button">Use this tool</NuxtLink>
+            </div>
+        </div>
+        <div class="disclaimer">Disclaimer: This website is not affiliated with LaTeX or any of its developers.</div>
     </div>
-    <div class="output-box" v-if="latex">
-      <h2>LaTeX Output</h2>
-      <div class="latex-output">
-        <div class="latex-" v-html="latex"></div>
-        <Copy class="copy-icon" @click="copyToClipboard" />
-      </div>
-      <h2>Matrix Preview</h2>
-      <pre class="matrix-preview">{{ matrix }}</pre>
-    </div>
-  </div>
 </template>
-
+  
 <script setup>
-import 'katex/dist/katex.min.css';
-import csvtojson from 'csvtojson';
-import katex from 'katex';
-
-let latex = ref(null)
-let matrix = ref(null)
-
-
-async function handleFileUpload(event) {
-  const csv = await readFile(event.target.files[0]);
-  // console.log(csv)
-  const json = await csvtojson().fromString(csv);
-
-  const latex1 = convertToLatex(json);
-  // const matrix = this.getMatrixText(latex);
-  const matrix1 = convertToMatrix(json);
-
-  latex.value = latex1;
-  matrix.value = matrix1;
-  // console.log(this.latex)
-
-  // this.latex.forEach(x => console.log(x))
-}
-
-function copyToClipboard() {
-  const output = document.querySelector('.latex-output');
-  const range = document.createRange();
-  range.selectNode(output);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-  document.execCommand('copy');
-  window.getSelection().removeAllRanges();
-  // Optional: show a notification that the text was copied
-  alert('LaTeX code copied to clipboard!');
-}
-
-function readFile(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsText(file);
-  });
-}
-
-function convertToLatex(json) {
-  let latex = "\\begin{pmatrix}\n";
-  const rows = json.map((item) => Object.values(item));
-  for (const row of rows) {
-    if (Array.isArray(row)) {
-      latex += row.join(" & ") + " \\\\ \n";
-    }
-  }
-  latex += "\\end{pmatrix}";
-
-  return latex;
-}
-
-function convertToMatrix(json) {
-  let latex = "";
-  const rows = json.map((item) => Object.values(item));
-  for (const row of rows) {
-    if (Array.isArray(row)) {
-      latex += row.join(" & ") + " \n";
-    }
-  }
-  return latex;
-}
-
 useHead(() => {
-  return {
-    title: 'CSV to LaTeX Converter - Convert CSV Data to LaTeX Tables Online',
-    meta: [
-      {
-        hid: 'description',
-        name: 'description',
-        content: 'Convert CSV data to LaTeX tables online with our free CSV to LaTeX converter tool. Simply upload your CSV file and download the resulting LaTeX code.'
-      },
-      {
-        hid: 'keywords',
-        name: 'keywords',
-        content: 'CSV to LaTeX, convert CSV to LaTeX, CSV to LaTeX converter, LaTeX tables, online LaTeX converter'
-      }
-    ],
-    script: [
-      {
-        hid: 'tags',
-        type: 'application/ld+json',
-        json: {
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "name": "CSV to LaTeX Converter - Convert CSV Data to LaTeX Tables Online",
-          "description": "Convert CSV data to LaTeX tables online with our free CSV to LaTeX converter tool. Simply upload your CSV file and download the resulting LaTeX code.",
-          "keywords": "CSV to LaTeX, convert CSV to LaTeX, CSV to LaTeX converter, LaTeX tables, online LaTeX converter",
-          "url": "https://example.com/csv-to-latex-converter",
-          "image": "https://example.com/images/csv-to-latex.png"
-        }
-      }
-    ]
-  }
+    return {
+        title: 'Latex Tools - Convert CSV and MathML to Latex',
+        meta: [
+            { charset: 'UTF-8' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+            { name: 'description', content: 'Easily convert CSV and MathML to Latex with our online tools. No more manual typing, just copy and paste!' },
+            { name: 'keywords', content: 'latex, csv, mathml, tools, online, convert, copy, paste' },
+            { name: 'robots', content: 'index,follow' },
+        ]
+    }
 })
 </script>
-
-
-<style >
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-}
-
-/* .dropzone {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: gray;
-  margin-bottom: 30px;
-} */
-
-.input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  
+<style scoped>
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
 }
 
 
-.dropzone-message {
-  text-align: center;
+
+.tool-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 30px;
 }
 
-.latex-output,
-.matrix-preview,
-.dropzone {
-  border: 2px solid gray;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 30px;
-  width: 300px;
-  height: 200px;
+.tool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
 }
 
-.latex-output {
-  margin-top: 20px;
-  font-size: 1.3rem;
-  position: relative;
+.tool:hover {
+    box-shadow: 0px 0px 5px 0px black;
 }
 
-.copy-icon {
-  position: absolute;
-  bottom: 2%;
-  right: 2%;
-  cursor: pointer;
+.tool-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-.matrix-preview {
-  font-family: monospace;
-  margin-bottom: 20px;
+.tool-description {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
+.tool-button {
+    background-color: #3a3a3a;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.tool-button:hover {
+    background-color: #525252;
+}
+
+.disclaimer {
+    margin-top: 50px;
+    font-size: 0.8rem;
+    text-align: center;
 }
 </style>
-
+  

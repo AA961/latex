@@ -3,13 +3,25 @@ export default defineNuxtConfig({
     // modules: [
     //     'nuxt-dropzone'
     // ],
+    plugins: [
+        // { src: '~/plugins/mathjax.js', mode: 'client' },
+        // { src: '~/plugins/katex.js' }
+    ],
 
     app: {
         head: {
             link: [
                 // { rel: 'stylesheet', href: 'fonts/noorehira.ttf' },
-                { rel: 'icon', href: '/fav.png' }
+                { rel: 'icon', href: '/fav.png' },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://latex.now.sh/prism/prism.css',
+                },
             ],
+            script: [
+                { src: 'https://cdn.jsdelivr.net/npm/prismjs/prism.min.js' },
+            ],
+
 
 
             style: [

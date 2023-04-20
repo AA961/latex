@@ -11,7 +11,7 @@
     </nav>
 </template>
   
-<style>
+<style scoped>
 nav {
     background-color: #eee;
     padding: 1rem;
