@@ -21,7 +21,7 @@
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink to="/latex-eqution-editor" exact-active-class="active" @click="toggleNavbar">LaTeX
+                        <NuxtLink to="/latex-editor" exact-active-class="active" @click="toggleNavbar">LaTeX
                             Equation Editor</NuxtLink>
                     </li>
                 </ul>

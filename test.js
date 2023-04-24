@@ -1,59 +1,74 @@
-function formatLatexString(input) {
-    // Replace &coloneq; with =
-    input = input.replace(/&coloneq;/g, "=");
-
-    // Replace &nbsp; with space
-    input = input.replace(/&nbsp;/g, " ");
-
-    // Replace &minus; with -
-    input = input.replace(/&minus;/g, "-");
-
-    // Replace &InvisibleTimes; with * or space
-    input = input.replace(/&InvisibleTimes;/g, "*");
-    input = input.replace(/&InvisibleTimes; /g, " ");
-
-    // Replace \left[0\right] with _0 or _anynumber
-    input = input.replace(/\\left\[0\\right\]/g, "_0");
-    input = input.replace(/\\left\[(\d+)\\right\]/g, function (match, p1) {
-        return "_" + p1;
-    });
-
-    // Replace greek characters
-    const greekChars = {
-        alpha: "\\alpha",
-        beta: "\\beta",
-        gamma: "\\gamma",
-        delta: "\\delta",
-        epsilon: "\\epsilon",
-        zeta: "\\zeta",
-        eta: "\\eta",
-        theta: "\\theta",
-        iota: "\\iota",
-        kappa: "\\kappa",
-        lambda: "\\lambda",
-        mu: "\\mu",
-        nu: "\\nu",
-        xi: "\\xi",
-        omicron: "\\omicron",
-        pi: "\\pi",
-        rho: "\\rho",
-        sigma: "\\sigma",
-        tau: "\\tau",
-        upsilon: "\\upsilon",
-        phi: "\\phi",
-        chi: "\\chi",
-        psi: "\\psi",
-        omega: "\\omega"
-    };
-
-    for (let key in greekChars) {
-        const regex = new RegExp(`&${key};`, "g");
-        input = input.replace(regex, greekChars[key]);
+function mathMLToKatex(mathML) {
+    // Convert MathML string to a DOM object
+    const parser = new DOMParser();
+    const mathMlDom = parser.parseFromString(mathML, "text/xml").documentElement;
+  
+    // Convert the MathML DOM object to a KaTeX string
+    let katexString = "";
+    const tag = mathMlDom.tagName.toLowerCase();
+    switch (tag) {
+      case "mrow":
+        katexString = Array.from(mathMlDom.children).map((child) => mathMLToKatex(child.outerHTML)).join("");
+        break;
+      case "mo":
+        const operator = mathMlDom.textContent;
+        switch (operator) {
+          case "×":
+            katexString = "\\cdot ";
+            break;
+          case "−":
+            katexString = "-";
+            break;
+          case "+":
+          case "=":
+            katexString = operator;
+            break;
+          default:
+            katexString = `\\${operator}`;
+            break;
+        }
+        break;
+      case "mn":
+      case "mi":
+        katexString = mathMlDom.textContent;
+        break;
+      case "mfrac":
+        const numerator = mathMLToKatex(mathMlDom.querySelector("mn, mi, mrow").outerHTML);
+        const denominator = mathMLToKatex(mathMlDom.querySelector("mn:last-of-type, mi:last-of-type, mrow:last-of-type").outerHTML);
+        katexString = `\\frac{${numerator}}{${denominator}}`;
+        break;
+      case "msup":
+        const base = mathMLToKatex(mathMlDom.querySelector("mn, mi, mrow").outerHTML);
+        const exponent = mathMLToKatex(mathMlDom.querySelector("mn:last-of-type, mi:last-of-type, mrow:last-of-type").outerHTML);
+        katexString = `^${exponent}{${base}}`;
+        break;
+      case "mroot":
+        const radicand = mathMLToKatex(mathMlDom.querySelector("mn, mi, mrow").outerHTML);
+        const degree = mathMLToKatex(mathMlDom.querySelector("mn:last-of-type, mi:last-of-type, mrow:last-of-type").outerHTML);
+        katexString = `\\sqrt[${degree}]{${radicand}}`;
+        break;
+      case "msqrt":
+        const inner = mathMLToKatex(mathMlDom.querySelector("mn, mi, mrow").outerHTML);
+        katexString = `\\sqrt{${inner}}`;
+        break;
+      case "munderover":
+        const baseElem = mathMlDom.querySelector("mn, mi, mrow");
+        const underElem = mathMLToKatex(mathMlDom.querySelector("munder").querySelector("mn, mi, mrow").outerHTML);
+        const overElem = mathMLToKatex(mathMlDom.querySelector("mover").querySelector("mn, mi, mrow").outerHTML);
+        const base1 = mathMLToKatex(baseElem.outerHTML);
+        const underover = `_{${underElem}}^{${overElem}}`;
+        katexString = `${base1}${underover}`;
+        break;
+      default:
+        console.log(`Unsupported tag: ${tag}`);
+        break;
     }
+  
+    return katexString;
+  }
+  
 
-    return input;
-}
+const strings = "<math><mrow><mi>u</mi><msub><mi>0</mi><mn> </mn></msub><mo>=</mo><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mrow><mo>(</mo><mrow><mfrac><msup><mi>y</mi><mn>2</mn></msup><mn>2</mn></mfrac><mo>-</mo><mfrac><msup><mi>h</mi><mn>2</mn></msup><mn>2</mn></mfrac></mrow><mo>)</mo><mo>*</mo><mi>P</mi><msub><mi>0</mi><mn> </mn></msub></mrow><mo>)</mo></mrow><mo>;</mo><mo> </mo><mo>#</mo><mo> </mo><mi>Forward</mi><mo> </mo><mi>Roll</mi><mo> </mo><mi>Coating</mi></mrow></math>"
 
-let reg = " &nbsp; u \left[0\right] &coloneq; \left(1 &plus; \left(\frac{y^{2}}{2} &minus; \frac{h^{2}}{2}\right) &InvisibleTimes; P \left[0\right]\right) ; &nbsp; # Forward Roll Coating"
-
-console.log(formatLatexString(reg))
+let result = mathMLToKatex(strings)
+console.log(result)

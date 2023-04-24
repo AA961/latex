@@ -23,6 +23,38 @@
   margin-top: 50px;
 }
 
+.btn {
+  width: 100%;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #3a3a3a;
+  color: blanchedalmond;
+  outline: none;
+  border: none;
+  padding: 0.6rem;
+  margin: 1rem auto;
+  font-size: 1rem;
+
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col{
+  flex-direction: column;
+}
+
+h2{
+  margin: 1rem auto;
+}
+
 .title {
   font-size: 3rem;
   font-weight: bold;
@@ -43,6 +75,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 80%;
 }
 
 .dropzone-message {
@@ -56,8 +89,8 @@
   border-radius: 10px;
   padding: 20px;
   margin-top: 30px;
-  width: 300px;
-  height: 200px;
+  width: 80%;
+  height: 300px;
 }
 
 .latex-output {

@@ -1,5 +1,6 @@
 <script setup>
 import Mathml2latex from 'mathml-to-latex'
+import katex from 'katex';
 
 
 useHead(() => {
@@ -118,12 +119,19 @@ function formatLatexString(input) {
 
 
 
+
+
+
+
 function convertMathmlToLatex() {
+    
     let result = Mathml2latex.convert(mathml.value);
     let format = formatLatexString(result);
-    formattedLatex.value = format
-    latex.value = format
+    formattedLatex.value = format;
+    latex.value = result
 }
+
+
 
 
 
@@ -139,20 +147,17 @@ function copyToClipboard() {
 <template>
     <section>
         <div class="container">
-            <h1 class="title">MathML to LaTex</h1>
+            <h1 class="title">MathML to LaTeX</h1>
             <div class="input-container">
-                <textarea name="" class="dropzone" placeholder="Paste Your MathML Here" v-model="mathml" id="" cols="30"
+                <textarea name="" class="dropzone" placeholder="Paste Your MathML Here" v-model="mathml"  id="" cols="30"
                     rows="10"></textarea>
                 <button class="btn" @click="convertMathmlToLatex">Convert</button>
             </div>
-            <!-- <p>MathML: {{ mathml }}</p> -->
-            <div v-if="latex">
+            <div v-if="latex" class="w-100 flex-center col">
                 <h2>Latex Output</h2>
-                <div class="output">
-                    <!-- <pre><code  class="language-latex">{{ latex }}</code></pre> -->
+                <div class="output w-100 flex-center col">
                     <textarea class="dropzone latex-code" v-model="latex" id="" cols="30" rows="10"></textarea>
                     <Copy class="copy-icon" @click="copyToClipboard" />
-
                 </div>
             </div>
         </div>
@@ -178,24 +183,13 @@ function copyToClipboard() {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
+    width: 100%;
 }
 
 .output {
     position: relative;
 }
 
-.btn {
-    width: 100%;
-    cursor: pointer;
-    border-radius: 10px;
-    background-color: #3a3a3a;
-        color: blanchedalmond;
-    outline: none;
-    border: none;
-    padding: 0.6rem;
-    margin: 1rem auto;
-    font-size: 1rem;
 
-}
 </style>
   

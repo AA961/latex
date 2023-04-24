@@ -18,9 +18,7 @@
 </template>
 
 <script setup>
-import 'katex/dist/katex.min.css';
 import csvtojson from 'csvtojson';
-import katex from 'katex';
 
 let latex = ref(null)
 let matrix = ref(null)
@@ -123,8 +121,6 @@ useHead(() => {
 
 
 <style >
-
-
 /* .dropzone {
   width: 300px;
   height: 200px;
@@ -137,9 +133,5 @@ useHead(() => {
   color: gray;
   margin-bottom: 30px;
 } */
-
-
-
-
 </style>
 
