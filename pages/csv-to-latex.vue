@@ -120,7 +120,15 @@ useHead(() => {
 </script>
 
 
-<style >
+<style  scoped>
+.copy-icon {
+  position: absolute;
+  bottom: 4%;
+  right: 4%;
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
 /* .dropzone {
   width: 300px;
   height: 200px;

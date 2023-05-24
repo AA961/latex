@@ -17,10 +17,35 @@
 }
 
 .container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  flex-direction: column;
+  margin: 2rem auto;
+}
+
+/* For screens smaller than 600px */
+@media screen and (max-width: 600px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
+/* For screens between 601px and 900px */
+@media screen and (min-width: 601px) and (max-width: 900px) {
+  .container {
+    max-width: 80%;
+  }
+}
+
+/* For screens larger than 900px */
+@media screen and (min-width: 901px) {
+  .container {
+    max-width: 1200px;
+  }
 }
 
 .btn {
@@ -41,17 +66,17 @@
   width: 100%;
 }
 
-.flex-center{
+.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.col{
+.col {
   flex-direction: column;
 }
 
-h2{
+h2 {
   margin: 1rem auto;
 }
 
@@ -75,7 +100,7 @@ h2{
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
 }
 
 .dropzone-message {
@@ -89,7 +114,8 @@ h2{
   border-radius: 10px;
   padding: 20px;
   margin-top: 30px;
-  width: 80%;
+  /* width: 80%; */
+  width: 100%;
   height: 300px;
 }
 
@@ -99,13 +125,7 @@ h2{
   position: relative;
 }
 
-.copy-icon {
-  position: absolute;
-  bottom: 4%;
-  right: 4%;
-  cursor: pointer;
-  font-size: 1.3rem;
-}
+
 
 .matrix-preview {
   font-family: monospace;

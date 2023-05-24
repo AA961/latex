@@ -1,6 +1,6 @@
 <script setup>
 import Mathml2latex from 'mathml-to-latex'
-import katex from 'katex';
+import signMap from '@/assets/signMap.json'
 
 
 useHead(() => {
@@ -39,80 +39,52 @@ const mathml = ref("")
 const latex = ref("")
 const formattedLatex = ref("")
 
-// function formatLatex(latexCode) {
-//     // Replace &nbsp; with a space
-//     latexCode = latexCode.replace(/&nbsp;/g, ' ');
+function replaceLatexSigns(inputString) {
 
-//     // Replace &plus; with +
-//     latexCode = latexCode.replace(/&plus;/g, '+');
+    let replacedString = inputString;
 
-//     // Replace &minus; with -
-//     latexCode = latexCode.replace(/&minus;/g, '-');
+    // Iterate over each sign mapping and replace occurrences
+    for (const sign in signMap) {
+        if (signMap.hasOwnProperty(sign)) {
+            const regex = new RegExp(sign, 'g');
+            replacedString = replacedString.replace(regex, signMap[sign]);
+        }
+    }
 
-//     // Replace &invisibleTimes; with a space
-//     latexCode = latexCode.replace(/&invisibleTimes;/g, ' ');
-
-//     // Replace unicode escape sequences with their respective characters
-//     latexCode = latexCode.replace(/\\u([\d\w]{4})/gi, function (match, grp) {
-//         return String.fromCharCode(parseInt(grp, 16));
-//     });
-
-//     // Replace HTML entities with their respective character
-//     return latexCode;
-// }
+    return replacedString;
+}
 
 function formatLatexString(input) {
-    // Replace &coloneq; with =
     input = input.replace(/&coloneq;/g, "=");
 
-    // Replace &nbsp; with space
     input = input.replace(/&nbsp;/g, " ");
 
-    // Replace &minus; with -
     input = input.replace(/&minus;/g, "-");
 
-    // Replace &InvisibleTimes; with * or space
     input = input.replace(/&InvisibleTimes;/g, "*");
-    input = input.replace(/&InvisibleTimes; /g, " ");
+    input = input.replace(/&InvisibleTimes;/g, " ");
 
-    // Replace \left[0\right] with _0 or _anynumber
     input = input.replace(/\\left\[0\\right\]/g, "_0");
     input = input.replace(/\\left\[(\d+)\\right\]/g, function (match, p1) {
         return "_" + p1;
     });
+    input = input.replace(/&plus;/g, '+');
+    input = input.replace(/&minus;/g, '-');
+    input = input.replace(/&invisibleTimes;/g, ' ');
+    input = input.replace(/a\\left[0\right]/g, 'a_0');
+    // input = input.replace(/\\right/g, '0');
 
-    // Replace greek characters
-    const greekChars = {
-        alpha: "\\alpha",
-        beta: "\\beta",
-        gamma: "\\gamma",
-        delta: "\\delta",
-        epsilon: "\\epsilon",
-        zeta: "\\zeta",
-        eta: "\\eta",
-        theta: "\\theta",
-        iota: "\\iota",
-        kappa: "\\kappa",
-        lambda: "\\lambda",
-        mu: "\\mu",
-        nu: "\\nu",
-        xi: "\\xi",
-        omicron: "\\omicron",
-        pi: "\\pi",
-        rho: "\\rho",
-        sigma: "\\sigma",
-        tau: "\\tau",
-        upsilon: "\\upsilon",
-        phi: "\\phi",
-        chi: "\\chi",
-        psi: "\\psi",
-        omega: "\\omega"
-    };
 
-    for (let key in greekChars) {
-        const regex = new RegExp(`&${key};`, "g");
-        input = input.replace(regex, greekChars[key]);
-    }
+
+
+    input = input.replace(/\\u([\d\w]{4})/gi, function (match, grp) {
+        return String.fromCharCode(parseInt(grp, 16));
+    });
+
+
+
+    input = replaceLatexSigns(input);
+
 
     return input;
 }
@@ -124,24 +96,18 @@ function formatLatexString(input) {
 
 
 function convertMathmlToLatex() {
-    
+
     let result = Mathml2latex.convert(mathml.value);
     let format = formatLatexString(result);
     formattedLatex.value = format;
-    latex.value = result
+    latex.value = format
 }
 
 
 
 
 
-function copyToClipboard() {
-    const textarea = document.querySelector('.latex-code')
-    textarea.select()
-    document.execCommand('copy')
-    // Optional: show a notification that the text was copied
-    alert('LaTeX code copied to clipboard!');
-}
+
 
 </script>
 <template>
@@ -149,15 +115,14 @@ function copyToClipboard() {
         <div class="container">
             <h1 class="title">MathML to LaTeX</h1>
             <div class="input-container">
-                <textarea name="" class="dropzone" placeholder="Paste Your MathML Here" v-model="mathml"  id="" cols="30"
+                <textarea name="" class="dropzone" placeholder="Paste Your MathML Here" v-model="mathml" id="" cols="30"
                     rows="10"></textarea>
                 <button class="btn" @click="convertMathmlToLatex">Convert</button>
             </div>
-            <div v-if="latex" class="w-100 flex-center col">
+            <div v-if="latex" class=" flex-center col w-100">
                 <h2>Latex Output</h2>
-                <div class="output w-100 flex-center col">
-                    <textarea class="dropzone latex-code" v-model="latex" id="" cols="30" rows="10"></textarea>
-                    <Copy class="copy-icon" @click="copyToClipboard" />
+                <div class="output flex-center col">
+                    <ColoredString :latexCode="latex" />
                 </div>
             </div>
         </div>
@@ -166,10 +131,19 @@ function copyToClipboard() {
   
 
 <style scoped>
-.latex-code {
+button {
+    /* padding: 32px 0px; */
+    width: 300px;
+}
+
+/* .input-container,
+.dropzone {
+    min-width: 300px !important;
+} */
+
+/* .latex-code {
     background: none;
     text-align: left;
-    /* white-space: pre; */
     word-spacing: normal;
     word-break: normal;
     word-wrap: normal;
@@ -184,12 +158,13 @@ function copyToClipboard() {
     -ms-hyphens: none;
     hyphens: none;
     width: 100%;
-}
+    min-width: 300px;
+
+} */
 
 .output {
     position: relative;
+
 }
-
-
 </style>
   

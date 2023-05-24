@@ -2,7 +2,7 @@
     <div class="container">
         <h1 class="title">LaTeX Editor</h1>
         <div class="input-container">
-            <textarea v-model="input" class="dropzone" placeholder="Enter LaTeX"></textarea>
+            <textarea v-model="input" class="dropzone" @input="parseInput" placeholder="Enter LaTeX"></textarea>
             <button class="btn" @click="parseInput">Convert</button>
 
         </div>
@@ -48,7 +48,7 @@ useHead(() => {
             { charset: 'UTF-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             { name: 'description', content: 'Create, edit and compile LaTeX code easily with our free online LaTeX editor. Perfect for students, academics, and professionals. Sign up now and start writing your papers, reports, and articles with ease. Keywords: LaTeX editor, online LaTeX editor, free LaTeX editor, compile LaTeX code, write LaTeX, LaTeX tool, academic writing, LaTeX compiler.' },
-            { name: 'keywords', content:'LaTeX editor ,online LaTeX editor, free LaTeX editor, compile LaTeX code,  latex, write LaTeX, LaTeX tool tools, online, convert, copy, paste' },
+            { name: 'keywords', content: 'LaTeX editor ,online LaTeX editor, free LaTeX editor, compile LaTeX code,  latex, write LaTeX, LaTeX tool tools, online, convert, copy, paste' },
             { name: 'robots', content: 'index,follow' },
         ]
     }

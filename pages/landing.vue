@@ -23,7 +23,7 @@
     </div>
 </template>
   
-<style>
+<style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 .container {
@@ -31,6 +31,8 @@
     margin: 0 auto;
     padding: 2rem;
     font-family: 'Roboto', sans-serif;
+    min-width: 300px;
+
 }
 
 .title {
