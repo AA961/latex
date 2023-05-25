@@ -18,9 +18,9 @@
     "katex": "^0.16.6",
     "mathml-to-latex": "^1.2.0",
     "mathml2latex": "^1.1.3",
+    "prettier": "^2.8.8",
     "prismjs": "^1.29.0",
     "sass": "^1.62.1",
-    "scss": "^0.2.4",
-    "vue-mathjax": "^0.1.1"
+    "scss": "^0.2.4"
   }
 }

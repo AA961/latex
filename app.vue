@@ -8,6 +8,7 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,700;1,400;1,700&family=Libre+Franklin:wght@400;600&display=swap');
 
 * {
   margin: 0;
@@ -15,6 +16,17 @@
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
+
+.katex-html .base {
+  display: none;
+}
+
+
+
+mtable {
+  font-size: 3rem;
+  font-family: 'Courier Prime', monospace !important;
+  color: #276391;}
 
 .container {
   width: 100%;

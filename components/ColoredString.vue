@@ -77,13 +77,13 @@ const coloredSegments = computed(() => {
 });
 
 const copyLatexCode = () => {
-  const textarea = document.createElement('textarea');
-  textarea.value = props.latexCode;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  document.body.removeChild(textarea);
-  alert("Latex Code copied successfully")
+    const textarea = document.createElement('textarea');
+    textarea.value = props.latexCode;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert("Latex Code copied successfully")
 };
 </script>
   
@@ -91,7 +91,6 @@ const copyLatexCode = () => {
 .latex-code {
     background-color: #f1f1f1 !important;
     padding: 20px;
-    font-family: 'Courier New', monospace;
     line-height: 1.4;
     letter-spacing: 2px;
     margin: 2rem auto;
@@ -122,6 +121,8 @@ const copyLatexCode = () => {
 
 .latex-code span {
     white-space: pre-wrap;
+    font-family: 'Courier Prime', monospace !important;
+
 }
 
 .copy-icon {
@@ -135,7 +136,8 @@ const copyLatexCode = () => {
     border: 1px solid seashell;
     padding: 0.5rem 1rem;
     margin: 1rem auto;
-    background-color: black;
+    /* background-color: black; */
+    background-color: #151414;
     color: whitesmoke;
     cursor: pointer;
 }

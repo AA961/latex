@@ -2,7 +2,6 @@
 import Mathml2latex from 'mathml-to-latex'
 import signMap from '@/assets/signMap.json'
 
-
 useHead(() => {
     return {
         title: 'MathML to LaTeX Converter - Convert MathML Equations to LaTeX Code Online',
@@ -72,28 +71,14 @@ function formatLatexString(input) {
     input = input.replace(/&minus;/g, '-');
     input = input.replace(/&invisibleTimes;/g, ' ');
     input = input.replace(/a\\left[0\right]/g, 'a_0');
-    // input = input.replace(/\\right/g, '0');
-
-
-
 
     input = input.replace(/\\u([\d\w]{4})/gi, function (match, grp) {
         return String.fromCharCode(parseInt(grp, 16));
     });
-
-
-
     input = replaceLatexSigns(input);
-
 
     return input;
 }
-
-
-
-
-
-
 
 function convertMathmlToLatex() {
 
@@ -103,21 +88,31 @@ function convertMathmlToLatex() {
     latex.value = format
 }
 
+function formatMathML() {
+    const latexCode = mathml.value;
 
+    // Regular expressions for LaTeX formatting
+    const indentRegex = /^(.*)/mg;
+    const newlineRegex = /(\r?\n)/g;
+    const spaceRegex = /(\s+)/g;
 
+    // Apply formatting rules
+    const formattedMathML = latexCode
+        .replace(indentRegex, '    $1') // Indent each line with four spaces
+        .replace(newlineRegex, '\n\n') // Add an extra newline between paragraphs
+        .replace(spaceRegex, ' '); // Reduce multiple consecutive spaces to a single space
 
-
-
-
+    mathml.value = formattedMathML;
+}
 </script>
 <template>
     <section>
         <div class="container">
             <h1 class="title">MathML to LaTeX</h1>
             <div class="input-container">
-                <textarea name="" class="dropzone" placeholder="Paste Your MathML Here" v-model="mathml" id="" cols="30"
-                    rows="10"></textarea>
-                <button class="btn" @click="convertMathmlToLatex">Convert</button>
+                <textarea name="" class="dropzone math-ml" spellcheck="false"
+                    placeholder="Paste Your MathML Here" v-model="mathml" id="" cols="30" rows="10"></textarea>
+                <button class="styled-button" @click="convertMathmlToLatex">Convert</button>
             </div>
             <div v-if="latex" class=" flex-center col w-100">
                 <h2>Latex Output</h2>
@@ -135,6 +130,25 @@ button {
     /* padding: 32px 0px; */
     width: 300px;
 }
+
+@media (max-width :500px) {
+    .title {
+        font-size: 1.8rem;
+    }
+}
+
+.math-ml {
+    outline: none;
+    border: none;
+    border-radius: 0px;
+    background: rgb(227, 227, 227);
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 600;
+    word-spacing: 8px;
+    line-height: 1.3rem;
+    color: #0f241d;
+}
+
 
 /* .input-container,
 .dropzone {

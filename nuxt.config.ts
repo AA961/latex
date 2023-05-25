@@ -41,4 +41,6 @@ export default defineNuxtConfig({
             ]
         }
     },
+
+    css: ['@/assets/css/button.css'],
 })

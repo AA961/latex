@@ -1,18 +1,21 @@
 <template>
   <div class="container">
     <h1 class="title">CSV to LaTeX</h1>
-    <div class="input-container">
+    <div id="matrix"></div>
+
+    <div class="input-container" v-if="!matrix">
       <label class="subtitle">Drop CSV file here or click to upload</label>
       <input class="dropzone" type="file" @change="handleFileUpload" accept=".csv">
     </div>
-    <div class="output-box" v-if="latex">
+    <div v-else>
+      <button class="styled-button" @click="matrix = null">Choose Another File</button>
+    </div>
+    <div class="output-box" v-if="matrix">
       <h2>LaTeX Output</h2>
-      <div class="latex-output">
-        <div class="latex-" v-html="latex"></div>
-        <Copy class="copy-icon" @click="copyToClipboard" />
-      </div>
+      <ColoredString :latex-code="latex" />
+
       <h2>Matrix Preview</h2>
-      <pre class="matrix-preview">{{ matrix }}</pre>
+      <Matrix :matrix="latex" />
     </div>
   </div>
 </template>
@@ -20,37 +23,25 @@
 <script setup>
 import csvtojson from 'csvtojson';
 
+
 let latex = ref(null)
 let matrix = ref(null)
 
 
+
+
 async function handleFileUpload(event) {
   const csv = await readFile(event.target.files[0]);
-  // console.log(csv)
   const json = await csvtojson().fromString(csv);
 
   const latex1 = convertToLatex(json);
-  // const matrix = this.getMatrixText(latex);
   const matrix1 = convertToMatrix(json);
 
   latex.value = latex1;
   matrix.value = matrix1;
-  // console.log(this.latex)
 
-  // this.latex.forEach(x => console.log(x))
 }
 
-function copyToClipboard() {
-  const output = document.querySelector('.latex-output');
-  const range = document.createRange();
-  range.selectNode(output);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-  document.execCommand('copy');
-  window.getSelection().removeAllRanges();
-  // Optional: show a notification that the text was copied
-  alert('LaTeX code copied to clipboard!');
-}
 
 function readFile(file) {
   return new Promise((resolve, reject) => {
@@ -113,7 +104,7 @@ useHead(() => {
           "url": "https://example.com/csv-to-latex-converter",
           "image": "https://example.com/images/csv-to-latex.png"
         }
-      }
+      },
     ]
   }
 })
@@ -129,17 +120,9 @@ useHead(() => {
   font-size: 1.3rem;
 }
 
-/* .dropzone {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed gray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: gray;
-  margin-bottom: 30px;
-} */
+.dropzone {
+  border: 5px dashed gray;
+  border-radius: 0px;
+}
 </style>
 
