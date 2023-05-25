@@ -1,6 +1,6 @@
 <script setup>
 import Mathml2latex from 'mathml-to-latex'
-import signMap from '@/assets/signMap.json'
+import signMap from '@/assets/character.json'
 
 useHead(() => {
     return {

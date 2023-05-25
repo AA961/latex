@@ -2,13 +2,12 @@
   <div class="container">
     <h1 class="title">CSV to LaTeX</h1>
     <div id="matrix"></div>
-
     <div class="input-container" v-if="!matrix">
       <label class="subtitle">Drop CSV file here or click to upload</label>
       <input class="dropzone" type="file" @change="handleFileUpload" accept=".csv">
     </div>
     <div v-else>
-      <button class="styled-button" @click="matrix = null">Choose Another File</button>
+      <button class="styled-button" @click="matrix = null">New File</button>
     </div>
     <div class="output-box" v-if="matrix">
       <h2>LaTeX Output</h2>

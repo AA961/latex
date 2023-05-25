@@ -1,13 +1,17 @@
 <template>
     <div class="container">
-        <h1 class="title">LaTeX Editor</h1>
-        <div class="input-container">
-            <textarea v-model="input" class="dropzone" @input="parseInput" placeholder="Enter LaTeX"></textarea>
-            <button class="btn" @click="parseInput">Convert</button>
+        <h1 class="title">LaTeX Preview</h1>
+        <div class="input-container w-100">
+            <textarea v-model="input" class="raw-latex dropzone" spellcheck="false" @input="parseInput"
+                placeholder="Enter LaTeX"></textarea>
+            <button class="styled-button" @click="getImage">Render</button>
 
         </div>
-        <div class="latex-output" v-if="output">
-            <div v-html="output"></div>
+        <div class="rendered-latex" v-if="img">
+            <img :src="`https://latex.codecogs.com/svg.image?${input}`" alt="">
+        </div>
+        <div v-if="loading">
+            <i class="fa fa-spinner"></i>
         </div>
     </div>
 </template>
@@ -17,6 +21,21 @@ import katex from 'katex';
 
 let input = ref("");
 let output = ref("");
+let img = ref("");
+const loading = ref(false)
+
+async function getImage() {
+    loading.value = true;
+    const { data, pending } = await useFetch(`https://latex.codecogs.com/svg.image?${input}`)
+    img.value = data.value
+    if (img.value) {
+        loading.value = false;
+
+    } else {
+        getImage()
+    }
+
+}
 
 function convertLatex(latexString) {
     // Replace double backslashes with a single backslash
@@ -55,17 +74,46 @@ useHead(() => {
 })
 </script>
 <style scoped>
-textarea {
-    width: 100%;
-    height: 200px;
-    font-size: 16px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
+.raw-latex {
+    outline: none;
+    border: none;
+    border-radius: 0px;
+    background: rgb(227, 227, 227);
+    font-family: 'Libre Franklin', sans-serif;
+    font-weight: 600;
+    word-spacing: 8px;
+    line-height: 1.3rem;
+    color: #0f241d;
+}
+
+.rendered-latex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    padding: 30px;
+    background-color: #f1f1f1 !important;
 }
 
 div {
     margin-top: 10px;
+}
+
+.fa-spinner,
+.fa-circle-notch {
+    animation: spin 2s linear infinite;
+
+}
+
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>
   
