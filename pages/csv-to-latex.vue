@@ -11,7 +11,7 @@
     </div>
     <div class="output-box" v-if="matrix">
       <h2>LaTeX Output</h2>
-      <ColoredString :latex-code="latex" />
+      <LatexCode :latex-code="latex" />
 
       <h2>Matrix Preview</h2>
       <Matrix :matrix="latex" />

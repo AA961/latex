@@ -1,0 +1,13 @@
+.rendered-latex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+    padding: 10px;
+    width: 90%;
+}
+
+.inner-container {
+    overflow: scroll;
+    padding: 8px;
+}

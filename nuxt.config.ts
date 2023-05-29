@@ -1,11 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    // modules: [
-    //     'nuxt-dropzone'
-    // ],
-    plugins: [
-        // { src: '~/plugins/mathjax.js', mode: 'client' },
-    ],
+    // modules: ['@pinia/nuxt'],
     app: {
         head: {
             link: [
@@ -29,5 +24,6 @@ export default defineNuxtConfig({
         }
     },
 
-    css: ['@/assets/css/button.css'],
+    css: ['@/assets/css/button.css',
+        '@/assets/css/latex.css'],
 })

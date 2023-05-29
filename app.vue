@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <!-- <Nav /> -->
+  <div id="app">
+
     <MobileNav />
     <NuxtPage />
   </div>
@@ -17,6 +17,10 @@
   font-family: 'Roboto', sans-serif;
 }
 
+#app{
+  overflow: hidden;
+}
+
 .katex-html .base {
   display: none;
 }
@@ -26,7 +30,8 @@
 mtable {
   font-size: 3rem;
   font-family: 'Courier Prime', monospace !important;
-  color: #276391;}
+  color: #276391;
+}
 
 .container {
   width: 100%;
@@ -125,8 +130,7 @@ h2 {
   border: 2px solid gray;
   border-radius: 10px;
   padding: 20px;
-  margin-top: 30px;
-  /* width: 80%; */
+  margin-top: 20px;
   width: 100%;
   height: 300px;
 }
@@ -147,5 +151,11 @@ h2 {
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+}
+
+@media (max-width :500px) {
+  .title {
+    font-size: 2rem;
+  }
 }
 </style>

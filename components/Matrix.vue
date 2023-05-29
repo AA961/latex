@@ -2,7 +2,7 @@
     <div class="w-100">
         <div class="options">
             <label for="bracket">Bracket:</label>
-            <select id="bracket" v-model="selectedBracket" @change="renderMatrix">
+            <select id="bracket" v-model="selectedBracket" @change="trimAndSet">
                 <option value="pmatrix">( )</option>
                 <option value="bmatrix">[ ]</option>
                 <option value="Bmatrix">{ }</option>
@@ -10,16 +10,18 @@
                 <option value="Vmatrix">|| ||</option>
             </select>
         </div>
-        <div class="matrix" ref="matrix"></div>
+        <!-- <div class="matrix" ref="matrix"></div> -->
+        <div v-if="trim">
+            <LatexPreview :latexCode="trim" />
+        </div>
     </div>
 </template>
   
 <script setup>
-import { ref, onMounted } from 'vue';
-import katex from 'katex';
 
 const matrixElement = ref(null);
-const selectedBracket = ref('pmatrix');
+const selectedBracket = ref('bmatrix');
+let trim = ref('');
 
 const props = defineProps({
     matrix: {
@@ -29,9 +31,14 @@ const props = defineProps({
 });
 
 
+function trimAndSet() {
+    let trimmed = removeMatrixDelimiters(props.matrix);
+    trim.value = `\\begin{${selectedBracket.value}} ${trimmed} \\end{${selectedBracket.value}}`
+}
+
 onMounted(() => {
-    matrixElement.value = document.querySelector('.matrix');
-    renderMatrix()
+    trimAndSet()
+
 });
 
 function removeMatrixDelimiters(matrix) {
@@ -47,23 +54,6 @@ function removeMatrixDelimiters(matrix) {
     return matrix.trim();
 }
 
-
-function renderMatrix() {
-    if (!matrixElement.value) return;
-
-    matrixElement.value.innerHTML = '';
-
-    try {
-        let val = removeMatrixDelimiters(props.matrix)
-        const matrixLatex = `\\begin{${selectedBracket.value}} ${val} \\end{${selectedBracket.value}}`;
-        katex.render(matrixLatex, matrixElement.value, {
-            throwOnError: false,
-            displayMode: true,
-        });
-    } catch (error) {
-        console.error('Error rendering LaTeX:', error);
-    }
-}
 </script>
   
 <style scoped>

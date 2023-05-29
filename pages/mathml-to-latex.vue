@@ -81,7 +81,7 @@ function formatLatexString(input) {
 }
 
 function convertMathmlToLatex() {
-
+    
     let result = Mathml2latex.convert(mathml.value);
     let format = formatLatexString(result);
     formattedLatex.value = format;
@@ -112,12 +112,12 @@ function formatMathML() {
             <div class="input-container">
                 <textarea name="" class="dropzone math-ml" spellcheck="false"
                     placeholder="Paste Your MathML Here" v-model="mathml" id="" cols="30" rows="10"></textarea>
-                <button class="styled-button" @click="convertMathmlToLatex">Convert</button>
+                <button class="styled-button" @click="convertMathmlToLatex()">Convert</button>
             </div>
-            <div v-if="latex" class=" flex-center col w-100">
+            <div v-if="latex" class="flex flex-center col w-100">
                 <h2>Latex Output</h2>
-                <div class="output flex-center col">
-                    <ColoredString :latexCode="latex" />
+                <div class="output flex-center col w-100">
+                    <Tab :latexCode="latex" />
                 </div>
             </div>
         </div>

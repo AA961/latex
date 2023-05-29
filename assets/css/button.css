@@ -28,3 +28,7 @@
 .styled-button:hover::before {
     height: 100%;
 }
+
+.w-310{
+    width: 310px;
+}

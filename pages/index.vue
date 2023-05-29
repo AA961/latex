@@ -14,7 +14,7 @@
                 <NuxtLink to="/mathml-to-latex" class="tool-button">Use this tool</NuxtLink>
             </div>
             <div class="tool">
-                <h2 class="tool-title">LaTeX Equation Previewer</h2>
+                <h2 class="tool-title">LaTeX Equation Editor</h2>
                 <div class="tool-description">Create LaTeX equations with a visual</div>
                 <NuxtLink to="/latex-editor" class="tool-button">Use this tool</NuxtLink>
             </div>

@@ -1,17 +1,3 @@
-<template>
-    <div class="latex-code">
-
-        <div class="copy-wrapper w-100" @click="copyLatexCode">
-            <Copy class="copy-icon " />
-            <span>Copy Code</span>
-        </div>
-
-        <div>
-            <span v-for="(segment, index) in coloredSegments" :key="index" :class="segment.type">{{ segment.text }}</span>
-        </div>
-    </div>
-</template>
-  
 <script setup>
 
 const props = defineProps({
@@ -20,6 +6,7 @@ const props = defineProps({
         required: true
     }
 });
+
 
 const coloredSegments = computed(() => {
     const segments = [];
@@ -85,9 +72,26 @@ const copyLatexCode = () => {
     document.body.removeChild(textarea);
     alert("Latex Code copied successfully")
 };
+
+
 </script>
+<template>
+    <div class="latex-code">
+
+        <div class="copy-wrapper w-100 flex" @click="copyLatexCode">
+            <div class="copy">
+                <Copy class="copy-icon " />
+                <span>Copy Code</span>
+            </div>
+        </div>
+        <div>
+            <span v-for="(segment, index) in coloredSegments" :key="index" :class="segment.type">{{ segment.text }}</span>
+        </div>
+    </div>
+</template>
   
-<style scoped>
+  
+<style scoped lang="scss">
 .latex-code {
     background-color: #f1f1f1 !important;
     padding: 20px;
@@ -140,6 +144,11 @@ const copyLatexCode = () => {
     background-color: #151414;
     color: whitesmoke;
     cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+
 }
 </style>
   

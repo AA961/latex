@@ -1,40 +1,74 @@
 <template>
     <div class="container">
-        <h1 class="title">LaTeX Preview</h1>
+        <h1 class="title">LaTeX Editor</h1>
         <div class="input-container w-100">
-            <textarea v-model="input" class="raw-latex dropzone" spellcheck="false" @input="parseInput"
+            <textarea v-model="input" class="raw-latex dropzone" spellcheck="false" @input="getImage"
                 placeholder="Enter LaTeX"></textarea>
-            <button class="styled-button" @click="getImage">Render</button>
+            <button class="styled-button w-310" @click="getImage">Render</button>
+        </div>
+        <div>
+            <div class="rendered-latex" v-if="img && !loading">
+                <div class="inner-container">
+                    <img :src="img" alt="latex">
+                </div>
 
+            </div>
+
+            <div class="input-container w-100">
+                <button class="styled-button" v-if="img && !loading" @click="downloadBlob">Download</button>
+            </div>
+            <div v-if="loading" class="rendered-latex">
+                <i class="fa fa-spinner"></i>
+            </div>
         </div>
-        <div class="rendered-latex" v-if="img">
-            <img :src="`https://latex.codecogs.com/svg.image?${input}`" alt="">
-        </div>
-        <div v-if="loading">
-            <i class="fa fa-spinner"></i>
-        </div>
+
     </div>
 </template>
   
 <script setup>
-import katex from 'katex';
+import { useRoute } from 'vue-router'
 
-let input = ref("");
-let output = ref("");
+const route = useRoute();
+
 let img = ref("");
-const loading = ref(false)
+let input = ref("");
+const loading = ref(false);
+let blob = ref("");
+
+onMounted(() => {
+    if (route.query.latex) {
+        input.value = route.query.latex;
+    }
+});
 
 async function getImage() {
     loading.value = true;
-    const { data, pending } = await useFetch(`https://latex.codecogs.com/svg.image?${input}`)
-    img.value = data.value
-    if (img.value) {
-        loading.value = false;
-
-    } else {
-        getImage()
+    if (input.value) {
+        const { data } = await useFetch(`https://latex.codecogs.com/svg.image?${input.value}`);
+        blob.value = data.value;
+        if (data.value) {
+            img.value = await convertBlobToDataURL(data.value);
+            loading.value = false;
+        }
     }
+}
 
+
+async function convertBlobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+function downloadBlob() {
+    const url = URL.createObjectURL(blob.value);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "Latex";
+    link.click();
 }
 
 function convertLatex(latexString) {
@@ -49,17 +83,6 @@ function convertLatex(latexString) {
 
     return formattedString;
 }
-
-
-function parseInput() {
-    let val = convertLatex(input.value)
-    try {
-        output.value = katex.renderToString(val);
-    } catch (e) {
-        output.value = `<span style="color:red">${e.message}</span>`;
-    }
-}
-
 useHead(() => {
     return {
         title: 'LaTeX Editor | Free Online Tool | Write and Compile LaTeX Code',
@@ -74,26 +97,24 @@ useHead(() => {
 })
 </script>
 <style scoped>
+.title {
+    margin-top: 2rem;
+}
+
 .raw-latex {
     outline: none;
     border: none;
     border-radius: 0px;
     background: rgb(227, 227, 227);
-    font-family: 'Libre Franklin', sans-serif;
+    white-space: pre-wrap;
+    font-family: 'Courier Prime', monospace !important;
     font-weight: 600;
     word-spacing: 8px;
     line-height: 1.3rem;
     color: #0f241d;
+    /* margin-top: -20px; */
 }
 
-.rendered-latex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem auto;
-    padding: 30px;
-    background-color: #f1f1f1 !important;
-}
 
 div {
     margin-top: 10px;
