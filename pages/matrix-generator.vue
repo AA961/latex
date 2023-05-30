@@ -1,6 +1,22 @@
 <template>
-  <div class="container">
-    <h1 class="title">CSV to LaTeX</h1>
+  <div class="selection-wrapper container">
+    <h1 class="title">Matrix Generator</h1>
+    <div class="selection">
+      <div class="code" @click="tab = 'csv'" :class="{ selected: tab === 'csv' }">
+        <i class="fa fa-view"></i>
+        <span>From CSV</span>
+      </div>
+
+      <div class="preview" @click="tab = 'values'" :class="{ selected: tab === 'values' }">
+        <i class="fa fa-view"></i>
+        <span>From Values</span>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="container" v-if="tab == 'csv'">
+    <h2 class="">CSV to LaTeX</h2>
     <div id="matrix"></div>
     <div class="input-container" v-if="!matrix">
       <label class="subtitle">Drop CSV file here or click to upload</label>
@@ -17,6 +33,10 @@
       <Matrix :matrix="latex" />
     </div>
   </div>
+
+  <div class="contaienr" v-if="tab == 'values'">
+    <GenerateMatrix />
+  </div>
 </template>
 
 <script setup>
@@ -25,6 +45,7 @@ import csvtojson from 'csvtojson';
 
 let latex = ref(null)
 let matrix = ref(null)
+let tab = ref("csv");
 
 
 

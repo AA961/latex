@@ -29,6 +29,8 @@ const props = defineProps({
         required: true
     }
 });
+watch(() => props.matrix, trimAndSet);
+
 
 
 function trimAndSet() {
@@ -42,16 +44,15 @@ onMounted(() => {
 });
 
 function removeMatrixDelimiters(matrix) {
-    const beginRegex = /\\begin{pmatrix}/g;
-    const endRegex = /\\end{pmatrix}/g;
+    const startIndex = matrix.indexOf("\\begin{bmatrix}");
+    const endIndex = matrix.indexOf("\\end{bmatrix}");
 
-    // Remove \begin{pmatrix}
-    matrix = matrix.replace(beginRegex, '');
+    if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
+        const startLength = "\\begin{bmatrix}".length;
+        return matrix.slice(startIndex + startLength, endIndex).trim();
+    }
 
-    // Remove \end{pmatrix}
-    matrix = matrix.replace(endRegex, '');
-
-    return matrix.trim();
+    return matrixCode;
 }
 
 </script>

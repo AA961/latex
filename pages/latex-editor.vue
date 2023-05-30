@@ -6,8 +6,8 @@
                 placeholder="Enter LaTeX"></textarea>
             <button class="styled-button w-310" @click="getImage">Render</button>
         </div>
-        <div>
-            <div class="rendered-latex" v-if="img && !loading">
+        <div class="w-100">
+            <div class="rendered-latex w-100" v-if="img && !loading">
                 <div class="inner-container">
                     <img :src="img" alt="latex">
                 </div>

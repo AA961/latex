@@ -25,5 +25,7 @@ export default defineNuxtConfig({
     },
 
     css: ['@/assets/css/button.css',
-        '@/assets/css/latex.css'],
+        '@/assets/css/latex.css',
+        '@/assets/scss/tabs.scss',
+    ],
 })

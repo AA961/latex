@@ -38,29 +38,6 @@ const props = defineProps({
     </div>
 </template>
 
-<style lang="scss" scoped>
-.selection-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+<style lang="scss" >
 
-    .selection {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        background: #f1f1f1;
-        cursor: pointer;
-        width: 320px;
-
-        .selected {
-            background: black;
-            color: #f1f1f1;
-            padding: 0.4rem;
-            width: 60%;
-            border-radius: 4px;
-        }
-    }
-}
 </style>

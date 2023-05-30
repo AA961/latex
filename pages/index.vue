@@ -4,9 +4,9 @@
         <div class="subtitle">Here you can find various tools to make your LaTeX workflow easier.</div>
         <div class="tool-container">
             <div class="tool">
-                <h2 class="tool-title">CSV to LaTeX Table</h2>
+                <h2 class="tool-title">LaTeX Matrix Generator</h2>
                 <div class="tool-description">Convert CSV files into LaTeX tables</div>
-                <NuxtLink to="/csv-to-latex" class="tool-button">Use this tool</NuxtLink>
+                <NuxtLink to="/matrix-generator" class="tool-button">Use this tool</NuxtLink>
             </div>
             <div class="tool">
                 <h2 class="tool-title">MathML to LaTeX</h2>
