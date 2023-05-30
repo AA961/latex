@@ -96,6 +96,8 @@ function convertToMatrix(json) {
   return latex;
 }
 
+
+
 useHead(() => {
   return {
     title: 'CSV to LaTeX Converter - Convert CSV Data to LaTeX Tables Online',

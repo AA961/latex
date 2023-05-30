@@ -53,7 +53,6 @@ const generateMatrix = () => {
     matrixCode.value += "\n\\end{bmatrix}";
 
     trimmedMatrixValues.value = removeMatrixDelimiters(matrixCode.value);
-    console.log(trimmedMatrixValues.value)
 };
 // Initialize matrixValues with the correct dimensions
 watch([rows, columns], () => {
@@ -74,8 +73,8 @@ const initializeMatrixValues = () => {
 initializeMatrixValues();
 
 function removeMatrixDelimiters(matrix) {
-    const beginRegex = /\\begin{pmatrix}/g;
-    const endRegex = /\\end{pmatrix}/g;
+    const beginRegex = /\\begin{bmatrix}/g;
+    const endRegex = /\\end{bmatrix}/g;
 
     // Remove \begin{pmatrix}
     matrix = matrix.replace(beginRegex, '');
